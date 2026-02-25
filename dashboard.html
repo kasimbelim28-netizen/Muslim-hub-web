@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Dashboard</h1>
-</body>
-</html>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<style>
+body{background:#0a0f1c;color:white;font-family:sans-serif;margin:0}
+.topbar{display:flex;justify-content:space-between;padding:18px;background:#0f1428}
+.btn{padding:10px 16px;border:none;border-radius:8px;cursor:pointer;margin-left:6px}
+.support{background:#1d4ed8;color:white}
+.admin{background:#111827;color:white}
+.discord{background:#5865F2;color:white}
+.partner{background:#16a34a;color:white}
+.main{padding:30px}
+.card{background:#111827;padding:20px;border-radius:12px;margin-bottom:20px}
+#adminArea{position:fixed;bottom:20px;right:20px;background:#020617;padding:15px;border-radius:10px;display:none}
+#supportBox,#partnerBox{
+display:none;background:#020617;padding:20px;border-radius:10px;
+position:fixed;top:50%;left:50%;transform:translate(-50%,-50%)
+}
+textarea,input{

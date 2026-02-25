@@ -1,1 +1,95 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>
+/* ========= ADMIN ========= */
+
+const OWNER_ID="1473632317112189062";
+const LOG_WEBHOOK="https://discord.com/api/webhooks/1475502367402233996/9tyecTFCmYzrh4MI9QFIFUzSmu_fpFio2lIPbWv-FfFR9HmtcCgRISI05omfkA1apAe-";
+
+function sendWebhook(msg){
+fetch(LOG_WEBHOOK,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({content:msg})
+});
+}
+
+function adminToggle(){
+
+const user=JSON.parse(localStorage.getItem("discordUser"));
+
+if(!user || user.id!==OWNER_ID){
+alert("Not admin");
+return;
+}
+
+document.getElementById("adminArea").style.display="block";
+}
+
+async function runCmd(){
+
+const user=JSON.parse(localStorage.getItem("discordUser"));
+if(!user || user.id!==OWNER_ID){
+alert("Admin only");
+return;
+}
+
+let cmd=document.getElementById("cmdBox").value.trim();
+let output=document.getElementById("output");
+
+/* LOCK WEBSITE (SUPABASE) */
+
+if(cmd==="?lockweb"){
+
+await supabase.from("site_settings")
+.update({locked:true})
+.eq("id",1);
+
+sendWebhook("🔒 Website locked by admin");
+location.reload();
+}
+
+/* UNLOCK WEBSITE */
+
+else if(cmd==="?unlockweb"){
+
+await supabase.from("site_settings")
+.update({locked:false})
+.eq("id",1);
+
+sendWebhook("🟢 Website unlocked by admin");
+location.reload();
+}
+
+/* ANNOUNCE */
+
+else if(cmd.startsWith("?announce ")){
+
+let text=cmd.replace("?announce ","");
+
+sendWebhook("📢 ANNOUNCEMENT:\n"+text);
+
+output.innerText="Announcement sent";
+}
+
+/* PLAY YOUTUBE */
+
+else if(cmd.startsWith("?playsong ")){
+
+let id=cmd.split(" ")[1];
+
+output.innerHTML=
+`<iframe width="250" height="140"
+src="https://www.youtube.com/embed/${id}"
+allowfullscreen></iframe>`;
+}
+
+/* SHOW USERS */
+
+else if(cmd==="?checkallusersaccount"){
+
+output.innerText=localStorage.getItem("discordUser")||"none";
+}
+
+else{
+alert("Unknown command");
+}
+
+}
